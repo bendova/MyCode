@@ -1,0 +1,13 @@
+Customer: Ion, Address: Humulesti
+The order contains: 
+Product: purchase0, Unit price: 0, Count: 0
+Product: purchase1, Unit price: 1, Count: 5
+Product: purchase2, Unit price: 2, Count: 10
+Product: purchase3, Unit price: 3, Count: 15
+Product: purchase4, Unit price: 4, Count: 20
+Product: purchase5, Unit price: 5, Count: 25
+Product: purchase6, Unit price: 6, Count: 30
+Product: purchase7, Unit price: 7, Count: 35
+Product: purchase8, Unit price: 8, Count: 40
+Product: purchase9, Unit price: 9, Count: 45
+Total cost: 1425
