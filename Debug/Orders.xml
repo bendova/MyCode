@@ -1,59 +1,59 @@
 <order>
-<customer>
-<name>Ion</name>
-<address>Humulesti</address>
-<data>Copilarie</data>
-</customer>
-<purchases>
-<purchase>
-<product>purchase0</product>
-<unitprice>0</unitprice>
-<count>0</count>
-</purchase>
-<purchase>
-<product>purchase1</product>
-<unitprice>1</unitprice>
-<count>5</count>
-</purchase>
-<purchase>
-<product>purchase2</product>
-<unitprice>2</unitprice>
-<count>10</count>
-</purchase>
-<purchase>
-<product>purchase3</product>
-<unitprice>3</unitprice>
-<count>15</count>
-</purchase>
-<purchase>
-<product>purchase4</product>
-<unitprice>4</unitprice>
-<count>20</count>
-</purchase>
-<purchase>
-<product>purchase5</product>
-<unitprice>5</unitprice>
-<count>25</count>
-</purchase>
-<purchase>
-<product>purchase6</product>
-<unitprice>6</unitprice>
-<count>30</count>
-</purchase>
-<purchase>
-<product>purchase7</product>
-<unitprice>7</unitprice>
-<count>35</count>
-</purchase>
-<purchase>
-<product>purchase8</product>
-<unitprice>8</unitprice>
-<count>40</count>
-</purchase>
-<purchase>
-<product>purchase9</product>
-<unitprice>9</unitprice>
-<count>45</count>
-</purchase>
-</purchases>
+	<customer>
+		<name>Ion</name>
+		<address>Humulesti</address>
+		<data>Copilarie</data>
+	</customer>
+	<purchases>
+		<purchase>
+			<product>purchase0</product>
+			<unitprice>0</unitprice>
+			<count>0</count>
+		</purchase>
+		<purchase>
+			<product>purchase1</product>
+			<unitprice>1</unitprice>
+			<count>5</count>
+		</purchase>
+		<purchase>
+			<product>purchase2</product>
+			<unitprice>2</unitprice>
+			<count>10</count>
+		</purchase>
+		<purchase>
+			<product>purchase3</product>
+			<unitprice>3</unitprice>
+			<count>15</count>
+		</purchase>
+		<purchase>
+			<product>purchase4</product>
+			<unitprice>4</unitprice>
+			<count>20</count>
+		</purchase>
+		<purchase>
+			<product>purchase5</product>
+			<unitprice>5</unitprice>
+			<count>25</count>
+		</purchase>
+		<purchase>
+			<product>purchase6</product>
+			<unitprice>6</unitprice>
+			<count>30</count>
+		</purchase>
+		<purchase>
+			<product>purchase7</product>
+			<unitprice>7</unitprice>
+			<count>35</count>
+		</purchase>
+		<purchase>
+			<product>purchase8</product>
+			<unitprice>8</unitprice>
+			<count>40</count>
+		</purchase>
+		<purchase>
+			<product>purchase9</product>
+			<unitprice>9</unitprice>
+			<count>45</count>
+		</purchase>
+	</purchases>
 </order>

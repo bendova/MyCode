@@ -1,9 +1,15 @@
 #include "stdafx.h"
 #include "Customer.h"
 #include <utility>
+#include <sstream>
 
 namespace MyCode
 {
+	const char* Customer::CUSTOMER_TAG = "customer";
+	const char* Customer::NAME_TAG  = "name";
+	const char* Customer::ADDRESS_TAG = "address";
+	const char* Customer::DATA_TAG = "data";
+
 	Customer::Customer(std::string name, std::string address, std::string data)
 		: mName(name)
 		, mAddress(address)
@@ -16,20 +22,32 @@ namespace MyCode
 		, mData(std::forward<std::string>(other.mData))
 	{}
 
+	Customer::Customer(XMLReader& reader)
+	{
+		XMLReader customerReader = reader.GetNextElement(CUSTOMER_TAG);
+		mName = customerReader.GetAsString(NAME_TAG);
+		mAddress = customerReader.GetAsString(ADDRESS_TAG);
+		mData = customerReader.GetAsString(DATA_TAG);
+	}
+
 	Customer::~Customer()
 	{}
 
-	std::ostream& Customer::ToXML(std::ostream& cout) const
+	bool Customer::operator==(const Customer& other)
 	{
-		cout << "<customer>" << std::endl;
-		{
-			cout << "<name>" << mName << "</name>" << std::endl;
-			cout << "<address>" << mAddress << "</address>" << std::endl;
-			cout << "<data>" << mData << "</data>" << std::endl;
-		}
-		cout << "</customer>" << std::endl;
+		return ((mName == other.mName) && (mAddress == other.mAddress)
+			&& (mData == other.mData));
+	}
 
-		return cout;
+	void Customer::ToXML(XMLWriter& writer) const
+	{
+		writer.BeginElement(CUSTOMER_TAG);
+		{
+			writer.WriteElement(NAME_TAG, mName);
+			writer.WriteElement(ADDRESS_TAG, mAddress);
+			writer.WriteElement(DATA_TAG, mData);
+		}
+		writer.EndElement(CUSTOMER_TAG);
 	}
 
 	std::ostream& operator<<(std::ostream& cout, const Customer& customer)

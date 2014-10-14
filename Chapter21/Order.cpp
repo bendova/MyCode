@@ -1,11 +1,17 @@
 #include "stdafx.h"
-#include "Order.h"
 #include <numeric>
 #include <algorithm>
 #include <utility>
+#include <sstream>
+#include "Order.h"
+#include "Algorithm.h"
 
 namespace MyCode
 {
+	const char* Order::ORDER_TAG = "order";
+	const char* Order::PURCHASES_TAG = "purchases";
+	const char* Order::CUSTOMER_TAG = "customer";
+
 	Order::Order(const Customer& customer)
 		: mCustomer(customer)
 		, mPurchases()
@@ -16,12 +22,52 @@ namespace MyCode
 		, mPurchases()
 	{}
 	
+	Order::Order(XMLReader& reader)
+		: mCustomer{reader}
+	{
+		// TODO and now start reading the purchases from XML
+
+		XMLReader purchasesXML = reader.GetNextElement(PURCHASES_TAG);
+		while (purchasesXML.HasNextElement(Purchase::PURCHASE_TAG))
+		{
+			Purchase purchase{ purchasesXML };
+			mPurchases.push_back(purchase);
+		}
+	}
+
 	Order::~Order()
 	{}
+
+	bool Order::operator==(const Order& other)
+	{
+		bool isSameOrder = false;
+		if (mCustomer == other.mCustomer)
+		{
+			auto begin = mPurchases.begin();
+			auto end = mPurchases.end();
+
+			auto otherBegin = other.mPurchases.begin();
+			auto otherEnd = other.mPurchases.end();
+			for (; (begin != end) && (otherBegin != otherEnd); ++begin, ++otherBegin)
+			{
+				if ((*begin == *otherBegin) == false)
+				{
+					break;
+				}
+			}
+			isSameOrder = ((begin == end) && (otherBegin == otherEnd));
+		}
+		return isSameOrder;
+	}
 
 	void Order::AddPurchase(Purchase& purchase)
 	{
 		mPurchases.push_back(purchase);
+	}
+
+	void Order::AddPurchases(std::vector<Purchase>& purchases)
+	{
+		mPurchases.insert(mPurchases.end(), purchases.begin(), purchases.end());
 	}
 
 	double Order::GetTotalCost() const
@@ -40,22 +86,26 @@ namespace MyCode
 		return mPurchases;
 	}
 
-	std::ostream& Order::ToXML(std::ostream& cout)
+	void Order::SortPurchases()
 	{
-		cout << "<order>" << std::endl;
+		Sort(mPurchases.begin(), mPurchases.end());
+	}
+
+	void Order::ToXML(XMLWriter& writer) const
+	{
+		writer.BeginElement(ORDER_TAG);
 		{
-			mCustomer.ToXML(cout);
-
-			cout << "<purchases>" << std::endl;
-			for (const Purchase& purchase : mPurchases)
+			mCustomer.ToXML(writer);
+			writer.BeginElement(PURCHASES_TAG);
 			{
-				purchase.ToXML(cout);
+				for (const Purchase& purchase : mPurchases)
+				{
+					purchase.ToXML(writer);
+				}
 			}
-			cout << "</purchases>" << std::endl;
+			writer.EndElement(PURCHASES_TAG);
 		}
-		cout << "</order>" << std::endl;
-
-		return cout;
+		writer.EndElement(ORDER_TAG);
 	}
 
 	std::ostream& operator<<(std::ostream& cout, const Order& order)

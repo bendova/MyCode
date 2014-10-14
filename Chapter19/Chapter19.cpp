@@ -5,11 +5,11 @@
 #include <iostream>
 #include <memory>
 #include <initializer_list>
-#include "Vector.h"
 #include "Array.h"
 #include "Memory.h"
 #include <memory>
 #include <fstream>
+#include <vector>
 
 using namespace MyCode;
 
@@ -78,17 +78,20 @@ void testMyUniquePointer()
 	p2->doSomething(); // should crash here because of the previous call to reset()
 }
 
+void testVectorIteration()
+{
+	using TestType = int;
+	std::vector<TestType> v{ 1, 2, 3 };
+	for (auto iter = v.begin(); iter != v.end(); ++iter)
+	{
+		TestType x = *iter;
+		x;
+	}
+}
+
 int _tmain(int argc, _TCHAR* argv[])
 {
-	std::ifstream myFileStream{ "D:\\file.txt", std::ifstream::in };
-
-	char c = myFileStream.get();
-	while (myFileStream.good())
-	{
-		std::cout << c;
-		c = myFileStream.get();
-	}
-
+	testVectorIteration();
 	std::getchar();
 	return 0;
 }

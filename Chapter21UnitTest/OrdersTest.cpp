@@ -9,6 +9,8 @@
 #include <string>
 #include <memory>
 #include <sstream>
+#include <vector>
+#include <algorithm>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace MyCode;
@@ -62,25 +64,32 @@ namespace UnitTest
 			Assert::AreEqual(totalCost, myOrder.GetTotalCost());
 		}
 
-		std::unique_ptr<Order> GetTestOrder()
+		Customer OrdersTest::getTestCustomer()
 		{
-			Customer myCustomer("Ion", "Humulesti", "Copilarie");
-			std::unique_ptr<Order> order{ new Order(myCustomer) };
+			return Customer("Ion", "Humulesti", "Copilarie");
+		}
 
+		std::vector<Purchase> OrdersTest::GetTestPurchases(const unsigned purchasesCount)
+		{
+			std::vector<Purchase> purchases;
 			std::ostringstream osstream;
-			const unsigned purchasesCount = 10;
 			for (unsigned i = 0; i < purchasesCount; ++i)
 			{
 				osstream.str("");
 				osstream << "purchase" << i;
-				Purchase cartofiPurchase(osstream.str(), i, 5 * i);
-				order->AddPurchase(cartofiPurchase);
+				purchases.push_back(Purchase(osstream.str(), i, 5 * i));
 			}
-			
+			return purchases;
+		}
+
+		std::unique_ptr<Order> OrdersTest::GetTestOrder()
+		{
+			std::unique_ptr<Order> order{ new Order(getTestCustomer()) };
+			order->AddPurchases(GetTestPurchases(8));
 			return order;
 		}
 
-		std::string GetOrderAsString()
+		std::string OrdersTest::GetOrderAsString()
 		{
 			std::unique_ptr<Order> myOrder = GetTestOrder();
 
@@ -101,14 +110,7 @@ namespace UnitTest
 			outputFile.close();
 		}
 
-		std::string GetOrderAsXML(std::unique_ptr<Order> order)
-		{
-			std::ostringstream outputBuffer;
-			order->ToXML(outputBuffer);
-			return outputBuffer.str();
-		}
-
-		void WriteToFile(const std::string& filePath, const std::string& content)
+		void OrdersTest::WriteToFile(const std::string& filePath, const std::string& content)
 		{
 			std::ofstream outputFile;
 			outputFile.open(filePath.c_str(), std::ofstream::out);
@@ -119,7 +121,7 @@ namespace UnitTest
 			outputFile.close();
 		}
 
-		std::string ReadFromFile(const std::string& filePath)
+		std::string OrdersTest::ReadFromFile(const std::string& filePath)
 		{
 			std::ifstream inputFile;
 			inputFile.open(filePath.c_str(), std::ifstream::in);
@@ -130,15 +132,68 @@ namespace UnitTest
 			return readContent;
 		}
 
-		TEST_METHOD(TestOrderToXML)
+		TEST_METHOD(TestWritingOrderToXML)
 		{
-			std::string fileName{ "Orders.xml" };
-			std::string contentToWrite = GetOrderAsXML(GetTestOrder());
+			std::string fileName{ "Order.xml" };
+			XMLWriter writer;
+			GetTestOrder()->ToXML(writer);
+			std::string contentToWrite = writer.FlushAsString();
 			WriteToFile(fileName, contentToWrite);
 
 			std::string readContent = ReadFromFile(fileName);
 
 			Assert::AreEqual(0, contentToWrite.compare(readContent));
+		}
+
+		TEST_METHOD(TestReadingPurchaseFromXML)
+		{
+			Purchase purchase("purchase1", 1.0, 5);
+			XMLWriter writer;
+			purchase.ToXML(writer);
+			XMLReader reader{ writer.FlushAsString() };
+			Purchase purchaseRead{ reader };
+
+			Assert::IsTrue(purchase == purchaseRead);
+		}
+
+		TEST_METHOD(TestReadingCustomerFromXML)
+		{
+			Customer customer("Jon", "Romania", "Data");
+			XMLWriter writer;
+			customer.ToXML(writer);
+			XMLReader reader{ writer.FlushAsString() };
+			Customer customerRead{ reader };
+
+			Assert::IsTrue(customer == customerRead);
+		}
+
+		TEST_METHOD(TestReadingOrderFromXML)
+		{
+			XMLWriter writer;
+			std::unique_ptr<Order> order = GetTestOrder();
+			order->ToXML(writer);
+			XMLReader reader{ writer.FlushAsString() };
+			Order orderRead{ reader };
+
+			Assert::IsTrue(*order == orderRead);
+		}
+
+		TEST_METHOD(TestSortingPurchases)
+		{
+			std::vector<Purchase> purchases;
+			purchases.push_back(Purchase("Purchase1", 2.0, 5));
+			purchases.push_back(Purchase("Purchase0", 4.0, 1));
+			purchases.push_back(Purchase("Purchase3", 7.0, 4));
+			purchases.push_back(Purchase("Purchase2", 6.0, 3));
+
+			std::vector<Purchase> stdSortedPurchases{ purchases };
+			std::sort(stdSortedPurchases.begin(), stdSortedPurchases.end());
+
+			std::unique_ptr<Order> order{ new Order(getTestCustomer()) };
+			order->AddPurchases(purchases);
+			order->SortPurchases();
+
+			Assert::IsTrue(std::equal(stdSortedPurchases.begin(), stdSortedPurchases.end(), order->GetPurchases().begin()));
 		}
 	};
 }

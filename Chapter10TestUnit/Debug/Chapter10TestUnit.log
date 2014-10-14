@@ -1,6 +1,8 @@
-﻿Build started 10/4/2014 1:28:42 PM.
-     1>Project "D:\Programare\C++\MyCode\Chapter10TestUnit\Chapter10TestUnit.vcxproj" on node 2 (Build target(s)).
+﻿Build started 10/4/2014 6:37:22 PM.
+     1>Project "D:\Programare\C++\MyCode\Chapter10TestUnit\Chapter10TestUnit.vcxproj" on node 4 (Rebuild target(s)).
      1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I"C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\UnitTest\include" /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _WINDLL /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yc"stdafx.h" /Fp"Debug\Chapter10TestUnit.pch" /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /FC /errorReport:prompt stdafx.cpp
+         stdafx.cpp
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I"C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\UnitTest\include" /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _WINDLL /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yu"stdafx.h" /Fp"Debug\Chapter10TestUnit.pch" /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /FC /errorReport:prompt Chapter10UnitTest.cpp
          Chapter10UnitTest.cpp
        Link:
@@ -8,8 +10,8 @@
          Debug\Chapter10UnitTest.obj
             Creating library D:\Programare\C++\MyCode\Debug\Chapter10TestUnit.lib and object D:\Programare\C++\MyCode\Debug\Chapter10TestUnit.exp
          Chapter10TestUnit.vcxproj -> D:\Programare\C++\MyCode\Debug\Chapter10TestUnit.dll
-     1>Done Building Project "D:\Programare\C++\MyCode\Chapter10TestUnit\Chapter10TestUnit.vcxproj" (Build target(s)).
+     1>Done Building Project "D:\Programare\C++\MyCode\Chapter10TestUnit\Chapter10TestUnit.vcxproj" (Rebuild target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:00.37
+Time Elapsed 00:00:01.07

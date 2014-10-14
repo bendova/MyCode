@@ -1,11 +1,16 @@
 #include "stdafx.h"
 #include "Purchase.h"
-#include <utility>
+#include <sstream>
 
 namespace MyCode
 {
-	Purchase::Purchase(std::string produceName, double unitPrice, unsigned count)
-		: mProductName(produceName)
+	const char* Purchase::PURCHASE_TAG = "purchase";
+	const char* Purchase::PRODUCT_NAME_TAG = "product";
+	const char* Purchase::UNIT_PRICE_TAG = "unitprice";
+	const char* Purchase::UNIT_COUNT_TAG = "count";
+
+	Purchase::Purchase(std::string productName, double unitPrice, unsigned count)
+		: mProductName(productName)
 		, mUnitPrice(unitPrice)
 		, mCount(count)
 	{}
@@ -16,20 +21,37 @@ namespace MyCode
 		, mCount(other.mCount)
 	{}
 
+	Purchase::Purchase(XMLReader& reader)
+	{
+		XMLReader purchaseReader = reader.GetNextElement(Purchase::PURCHASE_TAG);
+		mProductName = purchaseReader.GetAsString(Purchase::PRODUCT_NAME_TAG);
+		mUnitPrice = purchaseReader.GetAsDouble(Purchase::UNIT_PRICE_TAG);
+		mCount = purchaseReader.GetAsUnsigned(Purchase::UNIT_COUNT_TAG);
+	}
+
 	Purchase::~Purchase()
 	{}
 
-	std::ostream& Purchase::ToXML(std::ostream& cout) const
+	bool Purchase::operator==(const Purchase& other)
 	{
-		cout << "<purchase>" << std::endl;
-		{
-			cout << "<product>" << mProductName << "</product>" << std::endl;
-			cout << "<unitprice>" << mUnitPrice << "</unitprice>" << std::endl;
-			cout << "<count>" << mCount << "</count>" << std::endl;
-		}
-		cout << "</purchase>" << std::endl;
+		return (mProductName == other.mProductName) && (mUnitPrice == other.mUnitPrice)
+			&& (mCount == other.mCount);
+	}
 
-		return cout;
+	bool Purchase::operator<(const Purchase& other)
+	{
+		return (mCount * mUnitPrice) < (other.mCount * other.mUnitPrice);
+	}
+
+	void Purchase::ToXML(XMLWriter& writer) const
+	{
+		writer.BeginElement(PURCHASE_TAG);
+		{
+			writer.WriteElement(PRODUCT_NAME_TAG, mProductName);
+			writer.WriteElement(UNIT_PRICE_TAG, mUnitPrice);
+			writer.WriteElement(UNIT_COUNT_TAG, mCount);
+		}
+		writer.EndElement(PURCHASE_TAG);
 	}
 
 	std::ostream& operator<<(std::ostream& cout, const Purchase& purchase)

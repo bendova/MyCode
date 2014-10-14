@@ -80,12 +80,15 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Chapter21UnitTest\Algorithm.h" />
     <ClInclude Include="Chapter21.h" />
     <ClInclude Include="Customer.h" />
     <ClInclude Include="Order.h" />
     <ClInclude Include="Purchase.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="XMLReader.h" />
+    <ClInclude Include="XMLWriter.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Chapter21.cpp" />
@@ -96,6 +99,8 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="XMLReader.cpp" />
+    <ClCompile Include="XMLWriter.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Chapter19\Chapter19.vcxproj">

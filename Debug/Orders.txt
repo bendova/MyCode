@@ -8,6 +8,4 @@ Product: purchase4, Unit price: 4, Count: 20
 Product: purchase5, Unit price: 5, Count: 25
 Product: purchase6, Unit price: 6, Count: 30
 Product: purchase7, Unit price: 7, Count: 35
-Product: purchase8, Unit price: 8, Count: 40
-Product: purchase9, Unit price: 9, Count: 45
-Total cost: 1425
+Total cost: 700

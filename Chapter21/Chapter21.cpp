@@ -2,8 +2,8 @@
 //
 
 #include "stdafx.h"
-#include "Chapter21.h"
 #include <iostream>
+#include "Chapter21.h"
 #include "Vector.h"
 
 using namespace std;

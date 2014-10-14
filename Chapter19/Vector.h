@@ -7,7 +7,6 @@
 #include <sstream>
 #include <utility>
 #include <iostream>
-#include "FileHandle.h"
 
 namespace MyCode
 {
@@ -92,10 +91,135 @@ namespace MyCode
 		}
 	};
 
+	template<typename T>
+	class VectorIterator
+	{
+	public:
+		explicit VectorIterator(T* value) : mValue(value)
+		{}
+
+		VectorIterator(const VectorIterator& other) : mValue(other.mValue)
+		{}
+
+		VectorIterator(VectorIterator&& other) 
+			: mValue(other.mValue)
+		{
+			other.mValue = nullptr;
+		}
+
+		void operator=(const VectorIterator& other)
+		{
+			mValue = other.mValue;
+		}
+
+		bool operator==(const VectorIterator<T>& other)
+		{
+			return (mValue == other.mValue);
+		}
+
+		bool operator!=(const VectorIterator<T>& other)
+		{
+			return !(*this == other);
+		}
+
+		VectorIterator<T>& operator++() // pre-increment
+		{
+			++mValue;
+			return *this;
+		}
+
+		VectorIterator<T>& operator--() // pre-increment
+		{
+			--mValue;
+			return *this;
+		}
+
+		VectorIterator<T> operator++(int) // post-increment
+		{
+			VectorIterator<T> temp (*this);
+			++mValue;
+			return temp;
+		}
+
+		VectorIterator<T> operator--(int) // post-decrement
+		{
+			VectorIterator<T> temp(*this);
+			--mValue;
+			return temp;
+		}
+
+		T& operator*()
+		{
+			return *mValue;
+		}
+	private:
+		T* mValue;
+	};
+
+	template<typename T>
+	class VectorIteratorReverse
+	{
+	public:
+		explicit VectorIteratorReverse(T* value)
+			: mForwardIterator(value)
+		{}
+		void operator=(const VectorIteratorReverse& other)
+		{
+			mForwardIterator = other.mForwardIterator;
+		}
+
+		bool operator==(const VectorIteratorReverse<T>& other)
+		{
+			return (mForwardIterator == other.mForwardIterator);
+		}
+
+		bool operator!=(const VectorIteratorReverse<T>& other)
+		{
+			return !(*this == other);
+		}
+
+		VectorIteratorReverse<T>& operator++() // pre-increment
+		{
+			--mForwardIterator;
+			return *this;
+		}
+
+		VectorIteratorReverse<T>& operator--() // pre-increment
+		{
+			++mForwardIterator;
+			return *this;
+		}
+
+		VectorIteratorReverse<T> operator++(int) // post-increment
+		{
+			VectorIteratorReverse<T> temp(*this);
+			--mForwardIterator;
+			return temp;
+		}
+
+		VectorIteratorReverse<T> operator--(int) // post-decrement
+		{
+			VectorIteratorReverse<T> temp(*this);
+			++mForwardIterator;
+			return temp;
+		}
+
+		T& operator*()
+		{
+			return *mForwardIterator;
+		}
+
+	private:
+		VectorIterator<T> mForwardIterator;
+	};
+
 	template <typename T, typename A = std::allocator<T>>
 	class Vector
 	{
 	public:
+		using iterator = VectorIterator < T > ;
+		using reverse_iterator = VectorIteratorReverse < T >;
+
 		Vector(int size = 0, A& allocator = A()) : mBase(allocator, size)
 		{
 			for (int i = 0; i < mBase.mSize; ++i)
@@ -218,6 +342,27 @@ namespace MyCode
 				mBase.mSize = newSize;
 			}
 		}
+
+		iterator begin()
+		{
+			return VectorIterator<T>(mBase.mElements);
+		}
+
+		iterator end()
+		{
+			return VectorIterator<T>(&mBase.mElements[mBase.mSize]);
+		}
+
+		reverse_iterator rbegin()
+		{
+			return VectorIteratorReverse<T>(&mBase.mElements[mBase.mSize - 1]);
+		}
+
+		reverse_iterator rend()
+		{
+			return VectorIteratorReverse<T>(mBase.mElements - 1);
+		}
+
 	private:
 		void checkIfIndexIsInRange(int index) const
 		{
